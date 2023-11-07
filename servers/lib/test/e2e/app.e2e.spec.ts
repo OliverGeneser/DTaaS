@@ -11,7 +11,7 @@ import {
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: `http://localhost:4001${process.env.APOLLO_PATH}`,
+  uri: `http://${process.env.URL}:${process.env.PORT}${process.env.APOLLO_PATH}`,
   cache: new InMemoryCache({addTypename:false})
 });
 
@@ -38,7 +38,7 @@ describe("End to End test for the application", () => {
   it("should return the directory contents requested with HTTP POST query", async () => {
     const query = e2elistDirectory;
 
-    const response = await request("http://localhost:4001")
+    const response = await request(`http://${process.env.URL}:${process.env.PORT}`)
       .post(process.env.APOLLO_PATH)
       .send({ query });
     expect(response.body).toEqual(expectedListDirectoryResponse);
@@ -54,7 +54,7 @@ describe("End to End test for the application", () => {
   it("should return the filecontent requested with HTTP POST query", async () => {
     const query = e2eReadFile;
 
-    const response = await request("http://localhost:4001")
+    const response = await request(`http://${process.env.URL}:${process.env.PORT}`)
       .post(process.env.APOLLO_PATH)
       .send({ query });
     expect(response.body).toEqual(expectedFileContentResponse);

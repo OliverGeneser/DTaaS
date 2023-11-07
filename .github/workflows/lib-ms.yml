@@ -46,6 +46,7 @@ jobs:
           yarn test -a
         env:
           PORT: 4001
+          URL: test-lib-ms
           LOCAL_PATH: ${{ github.workspace }}/files
           GITLAB_GROUP: dtaas
           GITLAB_URL: https://gitlab.com/api/graphql
