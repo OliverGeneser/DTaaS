@@ -17,6 +17,7 @@ describe("Unit tests for FilesResolver", () => {
     const mockFilesService: IFilesService = {
       listDirectory: jest.fn().mockImplementation(() => testDirectory),
       readFile: jest.fn().mockImplementation(() => testFileContent),
+      writeFile: jest.fn().mockImplementation(()=>true),
     };
 
     const module: TestingModule = await Test.createTestingModule({

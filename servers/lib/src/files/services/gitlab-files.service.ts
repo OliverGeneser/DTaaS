@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import axios from "axios";
 import { Project } from "src/types";
 import { IFilesService } from "../interfaces/files.service.interface";
 import { getDirectoryQuery, getReadFileQuery } from "../queries";
+import { writeFileSync } from "fs";
 
 type QueryFunction = (domain: string, parsedPath: string) => string;
 
@@ -18,6 +19,10 @@ export default class GitlabFilesService implements IFilesService {
 
   async readFile(path: string): Promise<Project> {
     return this.executeQuery(path, getReadFileQuery);
+  }
+
+  async writeFile(path: string, content: string): Promise<boolean> {
+    return this.executeWriteQuery(path, content);
   }
 
   private async parseArguments(
@@ -61,5 +66,20 @@ export default class GitlabFilesService implements IFilesService {
     const { domain, parsedPath } = await this.parseArguments(path);
     const query = getQuery(domain, parsedPath);
     return this.sendRequest(query);
+  }
+
+  private async executeWriteQuery(
+    path: string,
+    content: string,
+  ): Promise<boolean> {
+    const { parsedPath } = await this.parseArguments(path);
+
+    try {
+      writeFileSync(parsedPath, content, {flag:"W"});
+
+      return true;
+    } catch (error) {
+      throw new InternalServerErrorException("Error reading file");
+    }
   }
 }

@@ -4,6 +4,7 @@ import { join } from "path";
 import { ConfigService } from "@nestjs/config";
 import { Project } from "src/types";
 import { IFilesService } from "../interfaces/files.service.interface";
+import { writeFileSync } from "fs";
 
 @Injectable()
 export default class LocalFilesService implements IFilesService {
@@ -44,6 +45,19 @@ export default class LocalFilesService implements IFilesService {
       const name = path.split("/").pop(); // extract file name from the path
 
       return LocalFilesService.formatResponse(name, content);
+    } catch (error) {
+      throw new InternalServerErrorException("Error reading file");
+    }
+  }
+
+  async writeFile(path: string, content: string): Promise<boolean> {
+    const dataPath = this.configService.get("LOCAL_PATH");
+    const fullpath = join(dataPath, path);
+
+    try {
+      writeFileSync(fullpath, content, {flag:"W"});
+
+      return true;
     } catch (error) {
       throw new InternalServerErrorException("Error reading file");
     }
