@@ -68,4 +68,15 @@ describe("Unit tests for FilesResolver", () => {
       expect(filesService.readFile).toHaveBeenCalledWith(pathToTestFileContent);
     });
   });
+  describe("writeFile", () => {
+    it("should be defined", () => {
+      expect(filesResolver.writeFile).toBeDefined();
+    });
+
+    it("should write file", async () => {
+      const result = await filesResolver.writeFile(pathToTestFileContent, "test123");
+      expect(result).toEqual(true);
+      expect(filesService.writeFile).toHaveBeenCalledWith(pathToTestFileContent, "test123");
+    });
+  });
 });

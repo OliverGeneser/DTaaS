@@ -113,22 +113,10 @@ describe('LocalFilesService', () => {
       pathToTestFileContent
     );
 
-    jest.spyOn(fs.promises, 'writeFile').mockResolvedValue();
+    // jest.spyOn(fs.promises, 'writeFile').mockResolvedValue();
 
     const result = await service.writeFile(pathToTestFileContent, fstestFileContent);
-    expect(result).toEqual({
-      repository: {
-        blobs: {
-          nodes: [
-            {
-              name: testFileName,
-              rawBlob: fstestFileContent,
-              rawTextBlob: fstestFileContent,
-            },
-          ],
-        },
-      },
-    });
+    expect(result).toEqual(true);
     expect(fs.promises.writeFile).toHaveBeenCalledWith(fullPath, 'utf8', fstestFileContent);
   });
 });
