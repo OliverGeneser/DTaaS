@@ -107,4 +107,28 @@ describe('LocalFilesService', () => {
     });
     expect(fs.promises.readFile).toHaveBeenCalledWith(fullPath, 'utf8');
   });
+  it('should upload file', async () => {
+    const fullPath = join(
+      mockConfigService.get('LOCAL_PATH'),
+      pathToTestFileContent
+    );
+
+    jest.spyOn(fs.promises, 'writeFile').mockResolvedValue();
+
+    const result = await service.writeFile(pathToTestFileContent, fstestFileContent);
+    expect(result).toEqual({
+      repository: {
+        blobs: {
+          nodes: [
+            {
+              name: testFileName,
+              rawBlob: fstestFileContent,
+              rawTextBlob: fstestFileContent,
+            },
+          ],
+        },
+      },
+    });
+    expect(fs.promises.writeFile).toHaveBeenCalledWith(fullPath, 'utf8', fstestFileContent);
+  });
 });

@@ -20,4 +20,10 @@ export default class FilesResolver {
   async readFile(@Args("path") path: string): Promise<Project> {
     return this.filesService.readFile(path);
   }
+
+  @Query(() => Boolean)
+  async writeFile(@Args("path") path: string, @Args("content") content: string): Promise<Boolean> {
+    return this.filesService.writeFile(path, content);
+    // return savedCorrectly ? "ok":"notok";
+  }
 }

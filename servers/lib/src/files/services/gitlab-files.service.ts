@@ -4,7 +4,7 @@ import axios from "axios";
 import { Project } from "src/types";
 import { IFilesService } from "../interfaces/files.service.interface";
 import { getDirectoryQuery, getReadFileQuery } from "../queries";
-import { writeFileSync } from "fs";
+import * as fs from "fs";
 
 type QueryFunction = (domain: string, parsedPath: string) => string;
 
@@ -75,7 +75,7 @@ export default class GitlabFilesService implements IFilesService {
     const { parsedPath } = await this.parseArguments(path);
 
     try {
-      writeFileSync(parsedPath, content, {flag:"W"});
+      fs.writeFileSync(parsedPath, content, {flag:"W"});
 
       return true;
     } catch (error) {

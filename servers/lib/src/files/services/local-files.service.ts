@@ -4,7 +4,6 @@ import { join } from "path";
 import { ConfigService } from "@nestjs/config";
 import { Project } from "src/types";
 import { IFilesService } from "../interfaces/files.service.interface";
-import { writeFileSync } from "fs";
 
 @Injectable()
 export default class LocalFilesService implements IFilesService {
@@ -55,7 +54,7 @@ export default class LocalFilesService implements IFilesService {
     const fullpath = join(dataPath, path);
 
     try {
-      writeFileSync(fullpath, content, {flag:"W"});
+      fs.writeFileSync(fullpath, content, {flag:"W"});
 
       return true;
     } catch (error) {

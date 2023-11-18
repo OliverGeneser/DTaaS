@@ -55,4 +55,5 @@ type Project {
 type Query {
   listDirectory(path: String!): Project!
   readFile(path: String!): Project!
+  writeFile(path: String!, content: String!): Boolen!
 }
